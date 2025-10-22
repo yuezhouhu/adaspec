@@ -19,6 +19,18 @@ Neural Information Processing Systems (NeurIPS), 2025
 *   **Scalable & Efficient:** Demonstrates effectiveness even with a significant size gap (up to 64x) between target and draft models.
 *   **Easy to Use:** Core implementation can be achieved in ~100 lines of code.
 
+## How AdaSPEC Works
+
+AdaSPEC introduces a **two-stage selective knowledge distillation** framework to train draft models that better align with the target model in Speculative Decoding.
+
+1.  **Reference Model as a Difficulty Analyzer**:  
+    A reference model (initialized identically to the draft model) is first distilled from the target model using standard knowledge distillation (e.g., forward KL divergence). This reference model serves not as the final draft, but as a **proxy to estimate token-wise learning difficulty**.
+
+2.  **Selective Token Filtering**:  
+    During distillation of the actual draft model, AdaSPEC computes the KL divergence loss for each token from both the draft and reference models against the target. It then calculates the **loss gap** $\Delta_{\mathcal{L}}(w) = \mathcal{L}_{\mathrm{draft}}(w) - \mathcal{L}_{\mathrm{ref}}(w)$. Tokens with a *larger* ΔL are considered **easier to learn**, because the draft model is already performing relatively better on them than the reference. AdaSPEC **selects the top-k% of these "easy" tokens** and trains the draft model *only* on this filtered subset.
+
+By focusing the draft model’s limited capacity on tokens it can reliably learn, AdaSPEC achieves **higher alignment** with the target model, leading to **consistently improved acceptance rates** across diverse tasks—without sacrificing generation quality.
+
 ## Repository Structure
 
 The repository is organized into branches, each corresponding to a specific experimental setup from our main results table.
@@ -68,7 +80,7 @@ bash run.sh
 | CNN/Daily Mail | 73.05% | **74.22%** | 79.33% | **80.63%** | 80.15% | **80.89%** | 85.01% | **86.29%** |
 | XSUM | 47.24% | **49.11%** | 58.88% | **59.93%** | 56.11% | **57.80%** | 66.78% | **68.19%** |
 
-## AdaSPEC Trainer for Your Own Models and Data
+## AdaSPEC Trainer
 
 To use AdaSpec to train your own models, our trainer can be implemented with a simple override to `transformers.Trainer.compute_loss`:
 ```python

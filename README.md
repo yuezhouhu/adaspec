@@ -23,7 +23,7 @@ Neural Information Processing Systems (NeurIPS), 2025
   rates across diverse tasks.
 * **Scalable & Efficient:** Demonstrates effectiveness even with a significant size gap (up to 64x) between target and
   draft models.
-* **Easy to Use:** Core implementation can be achieved in ~100 lines of code.
+* **Easy to Use:** The core implementation can be achieved in ~100 lines of code, and can be seamlessly integrated with advanced techniques such as EAGLE.
 
 ## How AdaSPEC Works
 

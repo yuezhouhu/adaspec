@@ -193,18 +193,13 @@ If you find our work useful in your research, please consider citing our paper:
 
 ```bibtex
 
-@inproceedings{adaspec2025,
-
-  title={AdaSPEC: Selective Knowledge Distillation for Efficient Speculative Decoders},
-
-  author={[YOUR AUTHORS HERE, e.g., Author, First and Author, Second]},
-
-  booktitle={Advances in Neural Information Processing Systems 38 (NeurIPS 2025)},
-
-  year={2025},
-
-  url={https://arxiv.org/abs/[YOUR_ARXIV_ID_HERE]}
-
+@inproceedings{
+adaspec2025,
+title={AdaSPEC: Selective Knowledge Distillation for Efficient Speculative Decoders},
+author={Yuezhou Hu and Jiaxin Guo and Xinyu Feng and Tuo Zhao},
+booktitle={The Thirty-ninth Annual Conference on Neural Information Processing Systems},
+year={2025},
+url={https://openreview.net/forum?id=zNLlglSOwD}
 }
 
 ```

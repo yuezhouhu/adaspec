@@ -9,7 +9,8 @@ generation quality.
 
 🎉 **We are thrilled to announce that this paper has been accepted as a Spotlight at NeurIPS 2025\!** 🎉
 
-**AdaSPEC: Selective Knowledge Distillation for Efficient Speculative Decoders** [[OpenReview]](https://openreview.net/forum?id=zNLlglSOwD)
+**AdaSPEC: Selective Knowledge Distillation for Efficient Speculative Decoders
+** [[OpenReview]](https://openreview.net/forum?id=zNLlglSOwD)
 
 Yuezhou Hu*, Jiaxin Guo*, Xinyu Feng, Tuo Zhao
 
@@ -23,7 +24,8 @@ Neural Information Processing Systems (NeurIPS), 2025
   rates across diverse tasks.
 * **Scalable & Efficient:** Demonstrates effectiveness even with a significant size gap (up to 64x) between target and
   draft models.
-* **Easy to Use:** The core implementation can be achieved in ~100 lines of code, and can be seamlessly integrated with advanced techniques such as EAGLE.
+* **Easy to Use:** The core implementation can be achieved in ~100 lines of code, and can be seamlessly integrated with
+  advanced techniques such as EAGLE.
 
 ## How AdaSPEC Works
 
@@ -38,8 +40,8 @@ with the target model in Speculative Decoding.
 2. **Selective Token Filtering**:  
    During distillation of the actual draft model, AdaSPEC computes the KL divergence loss for each token from both the
    draft and reference models against the target. It then calculates the **loss gap** ΔL = L_draft − L_ref. Tokens with
-   a *larger* ΔL are considered **easier to learn**, because the draft model is already performing relatively better on
-   them than the reference. AdaSPEC **selects the top-k% of these "easy" tokens** and trains the draft model *only* on
+   a *larger* ΔL are considered **easier to learn**, because higher ΔL indicates larger potential to optimize on those
+   tokens. AdaSPEC **selects the top-k% of these "easy" tokens** and trains the draft model *only* on
    this filtered subset.
 
 By focusing the draft model’s limited capacity on tokens it can reliably learn, AdaSPEC achieves **higher alignment**

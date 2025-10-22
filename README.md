@@ -1,5 +1,7 @@
 # AdaSPEC
 
+![adaspec.png](adaspec.png)
+
 This repository provides the official implementation of **AdaSPEC**, a novel method for training more efficient draft models for Speculative Decoding (SD). AdaSPEC introduces selective token filtering to bridge the capacity gap between large target models and small draft models, significantly improving token acceptance rates without compromising generation quality.
 
 🎉 **We are thrilled to announce that this paper has been accepted as a Spotlight at NeurIPS 2025\!** 🎉

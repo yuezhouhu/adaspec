@@ -14,7 +14,7 @@ Neural Information Processing Systems (NeurIPS), 2025
 
 *   **Selective Token Filtering:** Identifies "hard" tokens that are difficult for the draft model to learn and filters them out during distillation, allowing the draft model to focus its limited capacity on "easy" tokens.
 *   **Improved Alignment:** Achieves superior alignment between draft and target models, leading to higher acceptance rates across diverse tasks.
-*   **Scalable & Efficient:** Demonstrates effectiveness even with a significant size gap (up to 40x) between target and draft models.
+*   **Scalable & Efficient:** Demonstrates effectiveness even with a significant size gap (up to 64xZ) between target and draft models.
 *   **Easy to Use:** Core implementation can be achieved in ~100 lines of code.
 
 ## Repository Structure
@@ -66,10 +66,10 @@ bash run.sh
 | CNN/Daily Mail | 73.05% | **74.22%** | 79.33% | **80.63%** | 80.15% | **80.89%** | 85.01% | **86.29%** |
 | XSUM | 47.24% | **49.11%** | 58.88% | **59.93%** | 56.11% | **57.80%** | 66.78% | **68.19%** |
 
-## AdaSPEC Trainer
+## AdaSPEC Trainer for Your Own Models and Data
 
 To use AdaSpec to train your own models, our trainer can be implemented with a simple override to `transformers.Trainer.compute_loss`:
-```
+```python
 class AdaSPECTrainer(Trainer):
     def __init__(self, *args_, ref_model=None, target_model=None, k=None, **kwargs):
         super().__init__(*args_, **kwargs)
@@ -179,8 +179,8 @@ class AdaSPECTrainer(Trainer):
 
 [//]: # (```)
 
-[//]: # ()
-[//]: # (## License)
 
-[//]: # ()
-[//]: # (This project is licensed under the MIT License. See the [LICENSE]&#40;LICENSE&#41; file for details.)
+## License
+
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

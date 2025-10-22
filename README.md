@@ -77,7 +77,7 @@ We recommend using Python 3.11 and PyTorch 2.6.0.
    pip install trl accelerate deepspeed
    ```
 
-## Getting Started
+## Training
 
 To run an experiment, navigate to the desired branch and execute the provided shell script. You'll probably need to
 replace the path to your trained target and reference model.
@@ -89,6 +89,41 @@ git checkout gsm8k-target-pythia-1.4b-draft-pythia-31m-best
 # Run the experiment
 bash run.sh
 ```
+
+## Hyperparameter
+
+| Task           | Hyperparameter             | 3-Epoch<br>Pythia 31M→1.4B | 3-Epoch<br>Codegen-350M→Phi-2 | Optimal-Epoch<br>Pythia 31M→1.4B | Optimal-Epoch<br>Codegen-350M→Phi-2 |
+|:---------------|:---------------------------|:---------------------------|:------------------------------|:---------------------------------|:------------------------------------|
+| GSM8K          | Batch size                 | 16                         | 16                            | 16                               | 16                                  |
+|                | Learning rate              | 3e-4                       | 3e-4                          | 3e-4                             | 3e-4                                |
+|                | Epochs for target model    | 3                          | 3                             | 6                                | 3                                   |
+|                | Epochs for reference model | 3                          | 3                             | 15                               | 30                                  |
+|                | Epochs for draft model     | 3                          | 3                             | 30                               | 30                                  |
+|                | Filter fraction $k$        | 0.4                        | 0.4                           | 0.4                              | 0.4                                 |
+| Alpaca         | Batch size                 | 16                         | 16                            | 16                               | 16                                  |
+|                | Learning rate              | 3e-4                       | 3e-4                          | 3e-4                             | 3e-4                                |
+|                | Epochs for target model    | 3                          | 3                             | 1                                | 1                                   |
+|                | Epochs for reference model | 3                          | 3                             | 15                               | 20                                  |
+|                | Epochs for draft model     | 3                          | 3                             | 30                               | 15                                  |
+|                | Filter fraction $k$        | 0.4                        | 0.4                           | 0.4                              | 0.4                                 |
+| MBPP           | Batch size                 | 8                          | 8                             | 8                                | 8                                   |
+|                | Learning rate              | 1e-5                       | 1e-4                          | 1e-5                             | 1e-4                                |
+|                | Epochs for target model    | 3                          | 3                             | 1                                | 1                                   |
+|                | Epochs for reference model | 3                          | 3                             | 30                               | 10                                  |
+|                | Epochs for draft model     | 3                          | 3                             | 6                                | 6                                   |
+|                | Filter fraction $k$        | 0.4                        | 0.4                           | 0.4                              | 0.4                                 |
+| CNN/Daily Mail | Batch size                 | 16                         | 16                            | 16                               | 16                                  |
+|                | Learning rate              | 1e-4                       | 1e-4                          | 1e-4                             | 1e-4                                |
+|                | Epochs for target model    | 3                          | 3                             | 1                                | 1                                   |
+|                | Epochs for reference model | 3                          | 3                             | 10                               | 10                                  |
+|                | Epochs for draft model     | 3                          | 3                             | 10                               | 10                                  |
+|                | Filter fraction $k$        | 0.4                        | 0.4                           | 0.4                              | 0.4                                 |
+| XSUM           | Batch size                 | 16                         | 16                            | 16                               | 16                                  |
+|                | Learning rate              | 3e-4                       | 1e-4                          | 3e-4                             | 1e-4                                |
+|                | Epochs for target model    | 3                          | 3                             | 1                                | 1                                   |
+|                | Epochs for reference model | 3                          | 3                             | 10                               | 10                                  |
+|                | Epochs for draft model     | 3                          | 3                             | 10                               | 10                                  |
+|                | Filter fraction $k$        | 0.4                        | 0.4                           | 0.4                              | 0.4                                 |
 
 ## Main Results
 

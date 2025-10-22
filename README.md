@@ -14,7 +14,7 @@ Neural Information Processing Systems (NeurIPS), 2025
 
 *   **Selective Token Filtering:** Identifies "hard" tokens that are difficult for the draft model to learn and filters them out during distillation, allowing the draft model to focus its limited capacity on "easy" tokens.
 *   **Improved Alignment:** Achieves superior alignment between draft and target models, leading to higher acceptance rates across diverse tasks.
-*   **Scalable & Efficient:** Demonstrates effectiveness even with a significant size gap (up to 64xZ) between target and draft models.
+*   **Scalable & Efficient:** Demonstrates effectiveness even with a significant size gap (up to 64x) between target and draft models.
 *   **Easy to Use:** Core implementation can be achieved in ~100 lines of code.
 
 ## Repository Structure

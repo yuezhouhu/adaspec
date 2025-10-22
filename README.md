@@ -66,6 +66,95 @@ bash run.sh
 | CNN/Daily Mail | 73.05% | **74.22%** | 79.33% | **80.63%** | 80.15% | **80.89%** | 85.01% | **86.29%** |
 | XSUM | 47.24% | **49.11%** | 58.88% | **59.93%** | 56.11% | **57.80%** | 66.78% | **68.19%** |
 
+## AdaSPEC Trainer
+
+To use AdaSpec to train your own models, our trainer can be implemented with a simple override to `transformers.Trainer.compute_loss`:
+```
+class AdaSPECTrainer(Trainer):
+    def __init__(self, *args_, ref_model=None, target_model=None, k=None, **kwargs):
+        super().__init__(*args_, **kwargs)
+        self.ref_model = ref_model
+        self.target_model = target_model
+        from trl.trainer.utils import prepare_deepspeed
+        if self.ref_model is not None:
+            self.ref_model = prepare_deepspeed(
+                self.ref_model, self.args.per_device_train_batch_size, self.args.fp16,
+                self.args.bf16
+            )
+            self.ref_model.eval()
+        if self.target_model is not None:
+            self.target_model = prepare_deepspeed(
+                self.target_model, self.args.per_device_train_batch_size, self.args.fp16,
+                self.args.bf16
+            )
+            self.target_model.eval()
+        self.k = k
+
+    def compute_loss(self, model, inputs, return_outputs=False, num_items_in_batch=None):
+        labels = inputs["labels"][:, 1:]
+
+        outputs = model(**inputs)
+        with torch.no_grad():
+            target_outputs = self.target_model(**inputs, use_cache=False)
+            ref_outputs = self.ref_model(**inputs, use_cache=False)
+
+        logits = outputs["logits"]
+        target_logits = target_outputs["logits"]
+        ref_logits = ref_outputs["logits"]
+
+        loss_fct = KLDivLoss(reduction="none")
+
+        shift_logits = logits[..., :-1, :].contiguous()
+        shift_target_logits = target_logits[..., :-1, :].contiguous()
+        shift_ref_logits = ref_logits[..., :-1, :].contiguous()
+
+        shift_logits = shift_logits.view(-1, shift_logits.shape[-1])
+        shift_target_logits = shift_target_logits.view(-1, shift_target_logits.shape[-1])
+        shift_ref_logits = shift_ref_logits.view(-1, shift_ref_logits.shape[-1])
+        mask = labels.ne(IGNORE_INDEX).flatten().unsqueeze(-1)
+
+        shift_logits = torch.masked_select(shift_logits, mask=mask).view(-1, shift_logits.shape[-1])
+        shift_target_logits = torch.masked_select(shift_target_logits, mask=mask).view(-1,
+                                                                                       shift_target_logits.shape[-1])
+        shift_ref_logits = torch.masked_select(shift_ref_logits, mask=mask).view(-1, shift_ref_logits.shape[-1])
+
+        shift_logits = shift_logits.float()
+        shift_target_logits = shift_target_logits.float()
+        shift_ref_logits = shift_ref_logits.float()
+
+        p = F.softmax(shift_target_logits, dim=-1)
+        q_log = F.log_softmax(shift_logits, dim=-1)
+        actual = loss_fct(q_log, p)
+
+        q_log = F.log_softmax(shift_ref_logits, dim=-1)
+        ref = loss_fct(q_log, p)
+
+        actual = actual.sum(dim=-1)
+        ref = ref.sum(dim=-1)
+
+        k = self.k
+        delta = actual - ref
+        mask = delta >= torch.quantile(delta, 1 - k, dim=0, keepdim=True)
+
+        if num_items_in_batch is not None:
+            loss = torch.masked_select(actual, mask=mask).sum()
+            loss = loss / num_items_in_batch
+        else:
+            loss = torch.masked_select(actual, mask=mask).mean()
+
+        if (
+                self.args.average_tokens_across_devices
+                and (self.model_accepts_loss_kwargs or self.compute_loss_func)
+                and num_items_in_batch is not None
+        ):
+            loss *= self.accelerator.num_processes
+
+        return (loss, outputs) if return_outputs else loss
+
+```
+
+
+
 [//]: # (## Citation)
 
 [//]: # ()

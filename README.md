@@ -40,13 +40,11 @@ with the target model in Speculative Decoding.
 2. **Selective Token Filtering**:  
    During distillation of the actual draft model, AdaSPEC computes the KL divergence loss for each token from both the
    draft and reference models against the target. It then calculates the **loss gap** ΔL = L_draft − L_ref. Tokens with
-   a *larger* ΔL are considered **easier to learn**, because higher ΔL indicates larger potential to optimize on those
-   tokens. AdaSPEC **selects the top-k% of these "easy" tokens** and trains the draft model *only* on
+   a *larger* ΔL are considered **easier to learn**, because higher ΔL indicates larger potential to optimize. AdaSPEC **selects the top-k% of these "easy" tokens** and trains the draft model *only* on
    this filtered subset.
 
 By focusing the draft model’s limited capacity on tokens it can reliably learn, AdaSPEC achieves **higher alignment**
-with the target model, leading to **consistently improved acceptance rates** across diverse tasks—without sacrificing
-generation quality.
+with the target model, leading to **consistently improved acceptance rates** across diverse tasks.
 
 ## Repository Structure
 

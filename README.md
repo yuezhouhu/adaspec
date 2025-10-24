@@ -137,7 +137,7 @@ bash run.sh
 
 ## AdaSPEC Trainer
 
-To use AdaSpec to train your own models, our trainer can be implemented with a simple override to
+To use AdaSPEC to train your own models, our trainer can be implemented with a simple override to
 `transformers.Trainer.compute_loss`:
 
 ```python

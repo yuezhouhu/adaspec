@@ -10,7 +10,7 @@ generation quality.
 🎉 **We are thrilled to announce that this paper has been accepted as a Spotlight at NeurIPS 2025\!** 🎉
 
 **AdaSPEC: Selective Knowledge Distillation for Efficient Speculative Decoders**
-[[OpenReview]](https://openreview.net/forum?id=zNLlglSOwD)
+[[OpenReview]](https://openreview.net/forum?id=zNLlglSOwD) [[arXiv]](https://arxiv.org/abs/2510.19779)
 
 Yuezhou Hu*, Jiaxin Guo*, Xinyu Feng, Tuo Zhao
 

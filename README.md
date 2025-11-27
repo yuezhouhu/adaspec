@@ -72,7 +72,7 @@ We recommend using Python 3.11 and PyTorch 2.6.0.
 2. **Install other dependencies:**
    ```bash
    pip install transformers==4.52.3 datasets==3.6.0
-   pip install trl accelerate deepspeed
+   pip install trl accelerate deepspeed tensorboard
    ```
 
 ## Training
